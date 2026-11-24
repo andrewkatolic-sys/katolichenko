@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Майстер-клас Капор</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Майстер-клас «Капор»: шапка, шарф і капюшон в одній речі. Марафон з 27 листопада до 27 грудня.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prata&display=swap">
+<style>
+/* Layout concept: dark atelier hero with the hood photographed from the side, then a scroll-driven
+   sequence of thin outlined plashki that draw themselves, scissors riding the cut lines, two prices. */
+:root{
+  --ink:#151810;
+  --moss:#222819;
+  --moss-hi:#434d36;
+  --flax:#dcc7a3;
+  --flax-dim:#b3a483;
+  --frost:#eaefea;
+  --frost-line:#cdd6cf;
+  --wheat:#f2d982;
+  --text:#f1ece0;
+  --text-dim:#c0c4b4;
+  --on-frost:#1a1d14;
+  --on-frost-dim:#4b4f42;
+  --f-display:'Prata','Playfair Display',Georgia,'Times New Roman',serif;
+  --f-body:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --gutter:max(20px,env(safe-area-inset-left,0px));
+  --gutter-r:max(20px,env(safe-area-inset-right,0px));
+  --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--text);font:400 19px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--ink);z-index:60}
+a{color:inherit}
+h1,h2,h3,p{margin:0}
+h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance}
+:focus-visible{outline:3px solid var(--wheat);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;max-width:1200px;margin-inline:auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.eyebrow{font:600 15px/1.2 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--flax)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:58px;padding:0 32px;border-radius:999px;border:2px solid transparent;font:600 18px/1 var(--f-body);text-decoration:none;cursor:pointer;transition:transform .3s var(--ease),background .25s,border-color .25s}
+.btn-primary{background:var(--wheat);color:var(--ink)}
+.btn-primary:hover{transform:translateY(-2px);background:#f7e39c}
+.btn-ghost{border-color:rgba(241,236,224,.45);color:var(--text)}
+.btn-ghost:hover{border-color:var(--text);transform:translateY(-2px)}
+.btn-dark{background:var(--ink);color:var(--text)}
+.btn-dark:hover{transform:translateY(-2px);background:#232a19}
+.btn .arr{transition:transform .3s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+
+/* header */
+.top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:50;border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
+.top.solid{background:rgba(21,24,16,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:rgba(241,236,224,.1)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{font-family:var(--f-display);font-size:26px;text-decoration:none}
+.top .btn{min-height:46px;padding:0 24px;font-size:16px}
+
+/* hero */
+.hero{position:relative;isolation:isolate;min-height:clamp(720px,100svh,980px);display:grid;align-items:end;overflow:hidden;background:var(--ink)}
+.hero-bg{position:absolute;inset:0;z-index:-4;background:url(assets/bg.jpg) center/cover no-repeat;filter:saturate(.8) brightness(.5);transform:scale(1.08)}
+.hero-shade{position:absolute;inset:0;z-index:-3;background:
+  radial-gradient(60% 55% at 50% 38%,rgba(220,199,163,.18),transparent 70%),
+  linear-gradient(180deg,rgba(21,24,16,.35) 0%,rgba(21,24,16,.1) 40%,rgba(21,24,16,.94) 100%),
+  radial-gradient(120% 90% at 50% 40%,transparent 50%,rgba(21,24,16,.8) 100%)}
+.word{position:absolute;z-index:-2;left:0;right:0;top:calc(8vh + 44px);text-align:center;pointer-events:none;will-change:transform}
+.word h1{margin:0;font-weight:400}
+.word .pre{display:block;font:600 clamp(14px,1.4vw,17px)/1 var(--f-body);letter-spacing:.4em;text-transform:uppercase;color:var(--flax);padding-left:.4em;margin-bottom:clamp(6px,1.2vw,18px)}
+.word .big{display:block;font:400 clamp(5.5rem,27vw,25rem)/.82 var(--f-display);letter-spacing:-.01em;color:var(--moss-hi);-webkit-text-stroke:1px rgba(220,199,163,.25)}
+.hood-img{position:absolute;z-index:-1;left:50%;top:clamp(150px,19vh,190px);width:min(36vw,420px);height:auto;transform:translateX(-50%);filter:drop-shadow(0 34px 44px rgba(0,0,0,.55));animation:bob 7s ease-in-out infinite;will-change:transform}
+@keyframes bob{50%{transform:translateX(-50%) translateY(-12px)}}
+#snow{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:32px;align-items:end;padding-top:300px;padding-bottom:clamp(28px,5vh,56px);pointer-events:none}
+.hero-inner>*{pointer-events:auto}
+.lede{font-size:clamp(21px,2vw,26px);line-height:1.45;max-width:26ch;color:var(--text)}
+.lede b{font-weight:600;color:var(--flax)}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
+.meta{justify-self:end;display:grid;gap:12px;width:min(100%,380px)}
+.chip{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:16px 22px;border:1px solid rgba(241,236,224,.22);border-radius:20px;background:rgba(21,24,16,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.chip small{font:600 14px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--flax-dim)}
+.chip strong{font:400 28px/1 var(--f-display);white-space:nowrap}
+
+/* sections */
+.sec{padding-block:clamp(64px,9vw,120px)}
+.sec h2{font-size:clamp(2.3rem,5vw,4rem);line-height:1.08}
+.head{display:grid;gap:14px;margin-bottom:clamp(30px,4vw,52px)}
+
+/* ===== plashki sequence (scroll-driven, thin outlined squares that draw themselves) ===== */
+.seq{position:relative;height:370vh;background:var(--ink)}
+.seq-stick{position:sticky;top:0;height:100svh;overflow:hidden}
+.seq-bg{position:absolute;inset:0;background:radial-gradient(70% 55% at 50% 60%,rgba(220,199,163,.11),transparent 72%),radial-gradient(130% 95% at 50% 50%,transparent 45%,rgba(0,0,0,.55) 100%)}
+.seq-cap{position:absolute;left:var(--gutter);top:calc(env(safe-area-inset-top,0px) + 96px);margin:0;font:400 clamp(1.5rem,2.6vw,2.2rem)/1.15 var(--f-display);height:1.2em;min-width:60vw}
+.seq-cap span{position:absolute;left:0;top:0;white-space:nowrap;opacity:0;transition:opacity .45s}
+.seq-cap span.on{opacity:1}
+.ch{position:absolute;inset:0;display:grid;place-items:center;padding:150px var(--gutter-r) 36px var(--gutter);pointer-events:none}
+.row{display:grid;gap:clamp(14px,2vw,28px);--sq:clamp(200px,24vw,330px);will-change:transform}
+.row.r2{grid-template-columns:repeat(2,var(--sq))}
+.row.r4{--sq:clamp(160px,19vw,270px);grid-template-columns:repeat(4,var(--sq))}
+.sq{position:relative;width:var(--sq);height:var(--sq);--f:1;display:block}
+.js .sq{--f:0}
+.sq::before{content:"";position:absolute;inset:1px;background:linear-gradient(160deg,rgba(220,199,163,.10),rgba(220,199,163,.015) 70%);opacity:var(--f)}
+.sq .ol{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sq .ol rect{x:1px;y:1px;width:calc(100% - 2px);height:calc(100% - 2px);fill:none;stroke:rgba(241,236,224,.88);stroke-width:1.5;stroke-dasharray:1 1;stroke-dashoffset:0}
+.js .sq .ol rect{stroke-dashoffset:1}
+.sq .dot{position:absolute;left:0;top:0;width:7px;height:7px;margin:-3.5px;border-radius:50%;background:var(--wheat);box-shadow:0 0 12px 3px rgba(242,217,130,.55);opacity:0}
+.sq .ix{position:absolute;left:clamp(14px,6%,22px);top:clamp(12px,5%,18px);font:500 15px/1 var(--f-body);color:var(--flax-dim);opacity:var(--f)}
+.sq .tx{position:absolute;left:clamp(14px,6%,24px);right:clamp(14px,6%,24px);bottom:clamp(14px,6%,24px);opacity:var(--f)}
+.sq h3{font:400 clamp(1.2rem,calc(var(--sq)*.085),1.75rem)/1.15 var(--f-display);margin:0 0 8px}
+.sq p{font-size:clamp(16px,calc(var(--sq)*.058),19px);line-height:1.4;color:var(--text-dim)}
+.sq .no{position:absolute;left:0;right:0;top:40%;transform:translateY(-50%);text-align:center;font:400 calc(var(--sq)*.4)/1 var(--f-display);color:var(--flax);opacity:var(--f)}
+.seq.static{height:auto}
+.seq.static .seq-stick{position:static;height:auto;padding:96px 0 40px}
+.seq.static .seq-cap{position:static;height:auto;margin:0 0 28px var(--gutter)}
+.seq.static .seq-cap span{position:static;display:block;opacity:1;margin-bottom:6px}
+.seq.static .ch{position:static;display:block;padding:10px var(--gutter-r) 40px var(--gutter)}
+.seq.static .row{margin-inline:auto;width:max-content;max-width:100%}
+.seq.static .sq{--f:1}.seq.static .sq .ol rect{stroke-dashoffset:0}
+
+/* ===== scissors that ride the dashed cut line while you scroll ===== */
+.cut{position:relative;height:84px;background:var(--ink);color:var(--flax);overflow:hidden}
+.cut .ln{position:absolute;left:var(--gutter);right:var(--gutter-r);top:50%;border-top:2px dashed currentColor;clip-path:inset(0 calc((1 - var(--c,0))*100%) 0 0)}
+.cut.rtl .ln{clip-path:inset(0 0 0 calc((1 - var(--c,0))*100%))}
+.cut svg{position:absolute;top:50%;left:0;width:86px;height:46px;margin-top:-23px;margin-left:-43px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;will-change:transform}
+.cut.rtl svg{scale:-1 1}
+
+/* tariffs */
+.tariffs{background:var(--moss)}
+.tariffs h2{margin-bottom:clamp(26px,4vw,48px)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{padding:clamp(28px,3.6vw,48px);border-radius:32px;border:1px solid rgba(241,236,224,.22);display:flex;flex-direction:column;gap:22px;min-width:0}
+.card .lbl{font:600 16px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--flax-dim)}
+.card .sum{font:400 clamp(4rem,9vw,7rem)/.9 var(--f-display);display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.card .sum small{font:500 clamp(1.3rem,2.2vw,1.8rem)/1 var(--f-body);color:var(--text-dim)}
+.card ul{list-style:none;margin:0;padding:0;display:grid;gap:12px;font-size:19px;color:var(--text-dim)}
+.card li{display:flex;gap:14px;align-items:flex-start}
+.card li::before{content:"";flex:none;width:9px;height:9px;margin-top:.6em;border-radius:50%;background:var(--flax)}
+.card .btn{margin-top:auto;width:100%}
+.card.main{background:var(--wheat);color:var(--ink);border-color:var(--wheat)}
+.card.main .lbl{color:#5b5320}
+.card.main .sum small,.card.main ul{color:#443f1c}
+.card.main li::before{background:var(--ink)}
+.rules{margin-top:26px;display:grid;gap:10px;font-size:19px;color:var(--text-dim)}
+.rules b{color:var(--text);font-weight:600}
+.status{font:400 24px/1.3 var(--f-display);color:var(--text);margin-bottom:6px}
+
+footer{background:var(--ink);padding-block:48px calc(48px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(241,236,224,.1)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between}
+footer .logo{font-size:30px}
+footer p{color:var(--text-dim);font-size:17px;max-width:46ch}
+footer a.tg{color:var(--wheat);text-decoration:underline;text-underline-offset:4px}
+
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:55;padding:12px var(--gutter-r) calc(12px + env(safe-area-inset-bottom,0px)) var(--gutter);background:rgba(21,24,16,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(241,236,224,.12);transform:translateY(110%);transition:transform .45s var(--ease);display:none}
+.sticky .btn{width:100%}
+.sticky.show{transform:none}
+
+.js-anim .rv{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.js-anim .rv.in{opacity:1;transform:none}
+.js-anim .rv.d1{transition-delay:.08s}.js-anim .rv.d2{transition-delay:.16s}.js-anim .rv.d3{transition-delay:.24s}
+
+@media (max-width:980px){
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .hood-img{top:calc(4vh + 92px);width:min(60vw,320px)}
+  .hero-inner{grid-template-columns:1fr;padding-top:min(86vw,520px)}
+  .word .big{font-size:clamp(5.5rem,30vw,16rem)}
+  .meta{justify-self:stretch;width:100%;grid-template-columns:1fr 1fr}
+  .chip{flex-direction:column;align-items:flex-start;gap:8px}
+}
+@media (max-width:760px){
+  .row.r2{grid-template-columns:minmax(0,1fr);--sq:min(28svh,66vw,250px);gap:14px}
+  .row.r4{grid-template-columns:repeat(2,var(--sq));--sq:min(41vw,190px);gap:12px}
+  .sq .ix{left:auto;right:12px;top:10px}
+  .sq h3{font-size:clamp(1.05rem,4.6vw,1.3rem)}
+  .ch{padding-top:132px;padding-bottom:96px}
+  .cut{height:70px}
+  .cut svg{width:70px;height:38px;margin-top:-19px;margin-left:-35px}
+}
+@media (max-width:640px){
+  body{font-size:18px}
+  .top .wrap{height:62px}
+  .word{top:calc(3vh + 66px)}
+  .hero{min-height:max(720px,100svh)}
+  .cta-row .btn{flex:1 1 100%}
+  .sticky{display:block}
+  .top .btn{display:none}
+  footer{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hood-img{animation:none}
+  .js-anim .rv{opacity:1!important;transform:none!important;transition:none!important}
+}
+</style>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#hero" aria-label="Капор, на початок">Капор</a>
+    <a class="btn btn-primary tg" href="https://t.me/elena_katolichenko" target="_blank" rel="noopener">Долучитися</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="hero" aria-label="Майстер-клас Капор">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="word" id="word"><h1><span class="pre">Майстер-клас</span><span class="big">Капор</span></h1></div>
+  <img class="hood-img" id="hood" src="assets/hood.png" alt="Капор: шапка, шарф і капюшон в одній речі" width="865" height="1080">
+  <canvas id="snow" aria-hidden="true"></canvas>
+
+  <div class="wrap hero-inner">
+    <div>
+      <p class="lede"><b>Шапка, шарф і капюшон</b> в одній речі.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary tg" href="https://t.me/elena_katolichenko" target="_blank" rel="noopener">Долучитися</a>
+        <a class="btn btn-ghost" href="#seq">Що в програмі</a>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="chip"><small>Марафон</small><strong>27.11 — 27.12</strong></div>
+      <div class="chip"><small>Вартість</small><strong>150 грн</strong></div>
+    </div>
+  </div>
+</section>
+
+<div class="cut" id="cut1" aria-hidden="true"><div class="ln"></div><svg viewBox="0 0 86 46" aria-hidden="true"><g class="bA"><path d="M32 23 83 17"/><path d="M32 23 20 13"/><circle cx="12" cy="9" r="7"/></g><g class="bB"><path d="M32 23 83 29"/><path d="M32 23 20 33"/><circle cx="12" cy="37" r="7"/></g></svg></div>
+
+<section class="seq" id="seq" aria-label="Що ви отримуєте і програма">
+  <div class="seq-stick">
+    <div class="seq-bg" aria-hidden="true"></div>
+    <p class="seq-cap" aria-hidden="false"><span class="on">Що ви отримуєте</span><span>Програма</span></p>
+
+    <div class="ch">
+      <div class="row r2">
+        <article class="sq" data-s=".03">
+          <svg class="ol" aria-hidden="true"><rect pathLength="1"/></svg><i class="dot" aria-hidden="true"></i>
+          <span class="no" aria-hidden="true">№</span>
+          <div class="tx"><h3>Унікальний номер</h3></div>
+        </article>
+        <article class="sq" data-s=".15">
+          <svg class="ol" aria-hidden="true"><rect pathLength="1"/></svg><i class="dot" aria-hidden="true"></i>
+          <div class="tx"><h3>Подарунки до Нового року</h3><p>Перед Новим роком рандомним шляхом розігруються подарунки. Є можливість виграти.</p></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="ch">
+      <div class="row r4">
+        <article class="sq" data-s=".40">
+          <svg class="ol" aria-hidden="true"><rect pathLength="1"/></svg><i class="dot" aria-hidden="true"></i><span class="ix">1</span>
+          <div class="tx"><h3>Стартуємо</h3><p>Долучаєтесь до марафону й отримуєте свій номер.</p></div>
+        </article>
+        <article class="sq" data-s=".51">
+          <svg class="ol" aria-hidden="true"><rect pathLength="1"/></svg><i class="dot" aria-hidden="true"></i><span class="ix">2</span>
+          <div class="tx"><h3>Без паніки</h3><p>Олена показує все крок за кроком. Навіть якщо ви шиєте вперше.</p></div>
+        </article>
+        <article class="sq" data-s=".62">
+          <svg class="ol" aria-hidden="true"><rect pathLength="1"/></svg><i class="dot" aria-hidden="true"></i><span class="ix">3</span>
+          <div class="tx"><h3>Шиємо капор</h3><p>Шапка, шарф і капюшон в одній речі.</p></div>
+        </article>
+        <article class="sq" data-s=".73">
+          <svg class="ol" aria-hidden="true"><rect pathLength="1"/></svg><i class="dot" aria-hidden="true"></i><span class="ix">4</span>
+          <div class="tx"><h3>Тепло</h3><p>Захищає від вітру, холоду і снігу. Закриває голову і шию.</p></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cut rtl" id="cut2" aria-hidden="true"><div class="ln"></div><svg viewBox="0 0 86 46" aria-hidden="true"><g class="bA"><path d="M32 23 83 17"/><path d="M32 23 20 13"/><circle cx="12" cy="9" r="7"/></g><g class="bB"><path d="M32 23 83 29"/><path d="M32 23 20 33"/><circle cx="12" cy="37" r="7"/></g></svg></div>
+
+<section class="sec tariffs" id="price">
+  <div class="wrap">
+    <h2>Вартість участі</h2>
+    <div class="cards">
+      <article class="card main">
+        <span class="lbl">Участь у марафоні</span>
+        <div class="sum">150<small>грн</small></div>
+        <a class="btn btn-dark tg" href="https://t.me/elena_katolichenko" target="_blank" rel="noopener">Долучитися</a>
+      </article>
+      <article class="card">
+        <span class="lbl">Для учнів школи</span>
+        <div class="sum">100<small>грн</small></div>
+        <a class="btn btn-ghost tg" href="https://t.me/elena_katolichenko" target="_blank" rel="noopener">Долучитися</a>
+      </article>
+    </div>
+    <p class="rules">Щоб взяти участь, поділіться відео про капор у своїх сторіс.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#hero">Капор</a>
+    <p>Майстер-клас школи шиття Олени Католиченко. Марафон з 27 листопада до 27 грудня. Telegram: <a class="tg" href="https://t.me/elena_katolichenko" target="_blank" rel="noopener">@elena_katolichenko</a></p>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky"><a class="btn btn-primary tg" href="https://t.me/elena_katolichenko" target="_blank" rel="noopener">Долучитися за 150 грн</a></div>
+
+<script>
+(function(){
+  'use strict';
+  var doc=document.documentElement;
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  doc.classList.add('js-anim');doc.classList.add('js');
+  var $=function(id){return document.getElementById(id)};
+  function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+
+  /* header */
+  var top=document.getElementById('top');
+  function onScroll(){top.classList.toggle('solid',window.scrollY>40)}
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  /* reveal on scroll; everything is visible at rest if the observer never fires */
+  var rv=[].slice.call(document.querySelectorAll('.rv'));
+  function show(el){el.classList.add('in')}
+  if('IntersectionObserver' in window&&!reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){show(e.target);io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -5% 0px'});
+    rv.forEach(function(el){io.observe(el)});
+    setTimeout(function(){rv.forEach(function(el){var r=el.getBoundingClientRect();if(r.top<innerHeight)show(el)})},50);
+  }else{rv.forEach(show)}
+
+  /* sticky mobile CTA */
+  var sticky=document.getElementById('sticky'),hero=document.getElementById('hero'),tar=document.getElementById('price');
+  if('IntersectionObserver' in window){
+    var heroIn=true,tarIn=false;
+    var upd=function(){sticky.classList.toggle('show',!heroIn&&!tarIn)};
+    new IntersectionObserver(function(e){heroIn=e[0].isIntersecting;upd()},{threshold:.2}).observe(hero);
+    new IntersectionObserver(function(e){tarIn=e[0].isIntersecting;upd()},{threshold:.2}).observe(tar);
+  }
+
+
+  /* ---------- plashki sequence, driven by scroll ---------- */
+  var seq=$('seq'),sqs=[].slice.call(seq.querySelectorAll('.sq')),chs=[].slice.call(seq.querySelectorAll('.ch')),caps=[].slice.call(seq.querySelectorAll('.seq-cap span'));
+  var rows=chs.map(function(c){return c.querySelector('.row')});
+  function seg(p,a,b){return Math.max(0,Math.min(1,(p-a)/(b-a)))}
+  var staticMode=reduce;
+  seq.classList.toggle('static',staticMode);
+  function perim(t,w,h){var P=2*(w+h),d=t*P;if(d<w)return[d,0];d-=w;if(d<h)return[w,d];d-=h;if(d<w)return[w-d,h];d-=w;return[0,h-d]}
+  function seqUpdate(){
+    if(staticMode)return;
+    var r=seq.getBoundingClientRect(),total=Math.max(1,seq.offsetHeight-innerHeight),p=Math.max(0,Math.min(1,-r.top/total));
+    var c0=1-seg(p,.29,.34),c1=seg(p,.35,.39);
+    chs[0].style.opacity=c0;chs[1].style.opacity=c1;
+    caps[0].classList.toggle('on',p<.33);caps[1].classList.toggle('on',p>=.33);
+    sqs.forEach(function(q){
+      var s0=parseFloat(q.getAttribute('data-s')),o=seg(p,s0,s0+.07),f=seg(p,s0+.055,s0+.105),eo=ease(o);
+      q.style.setProperty('--f',f.toFixed(3));
+      q.querySelector('rect').style.strokeDashoffset=(1-o).toFixed(4);
+      q.style.transform='translateX('+((1-eo)*26).toFixed(1)+'px)';
+      var d=q.querySelector('.dot'),w=q.offsetWidth,h=q.offsetHeight;
+      if(o>0&&o<1){var pt=perim(o,w,h);d.style.left=pt[0]+'px';d.style.top=pt[1]+'px';d.style.opacity=1}else d.style.opacity=0;
+    });
+    /* the row re-centres as squares join it */
+    rows.forEach(function(row,ri){
+      var cols=getComputedStyle(row).gridTemplateColumns.split(' ').length;if(cols<2){row.style.transform='';return}
+      var kids=[].slice.call(row.children),vis=1,q0=kids[0].offsetWidth,gap=parseFloat(getComputedStyle(row).columnGap)||0;
+      kids.slice(1).forEach(function(k){var s0=parseFloat(k.getAttribute('data-s'));vis+=ease(seg(p,s0,s0+.07))});
+      row.style.transform='translateX('+(((kids.length-vis)*(q0+gap))/2).toFixed(1)+'px)';
+    });
+  }
+  /* ---------- scissors riding the cut lines ---------- */
+  var cuts=[].slice.call(document.querySelectorAll('.cut'));
+  function cutUpdate(){
+    cuts.forEach(function(c){
+      var r=c.getBoundingClientRect(),p=reduce?1:ease(Math.max(0,Math.min(1,(innerHeight*.9-r.top)/(innerHeight*.6)))),rtl=c.classList.contains('rtl');
+      var W=c.clientWidth,g=parseFloat(getComputedStyle(c.querySelector('.ln')).left)||20,gr=parseFloat(getComputedStyle(c.querySelector('.ln')).right)||20;
+      var span=W-g-gr,x=rtl?W-gr-span*p:g+span*p;
+      c.style.setProperty('--c',p);
+      var sv=c.querySelector('svg');sv.style.left=x+'px';
+      var a=reduce?0:(Math.sin(p*70)*.5+.5)*13;
+      sv.querySelector('.bA').setAttribute('transform','rotate('+(-a)+' 32 23)');sv.querySelector('.bB').setAttribute('transform','rotate('+a+' 32 23)');
+      sv.style.opacity=(p>0&&p<1)?1:(p>=1?.0:0);
+    });
+  }
+  var sraf=0;
+  function onS(){if(!sraf)sraf=requestAnimationFrame(function(){sraf=0;seqUpdate();cutUpdate()})}
+  addEventListener('scroll',onS,{passive:true});addEventListener('resize',onS);
+  seqUpdate();cutUpdate();
+
+  /* ---------- snow (2D canvas) and a gentle pointer parallax ---------- */
+  var cv=document.getElementById('snow'),cx=cv.getContext('2d'),hood=document.getElementById('hood'),word=document.getElementById('word');
+  var DPR=Math.min(window.devicePixelRatio||1,2),W=0,H=0,fl=[];
+  function seed(f,fresh){f.x=Math.random()*W;f.y=fresh?Math.random()*H:-10;f.r=(Math.random()*2.4+.9)*DPR;f.vy=(18+f.r*9*Math.random()+Math.random()*26)*DPR;f.ph=Math.random()*6.28;f.a=.45+Math.random()*.5}
+  function size(){
+    var r=hero.getBoundingClientRect();W=cv.width=Math.round(r.width*DPR);H=cv.height=Math.round(r.height*DPR);
+    var n=reduce?60:(r.width<700?70:150);fl=[];for(var i=0;i<n;i++){var f={};seed(f,true);fl.push(f)}
+    drawSnow(0);
+  }
+  function gust(t){return .55+.25*Math.sin(t*1.7)+.2*Math.sin(t*4.3+1.2)}
+  function drawSnow(dt){
+    cx.clearRect(0,0,W,H);var t=performance.now()/1000,g=gust(t);
+    for(var i=0;i<fl.length;i++){
+      var f=fl[i];
+      if(!reduce){f.y+=f.vy*dt;f.x+=(-22*g*DPR*(.6+f.r/(3*DPR))+Math.sin(t*.9+f.ph)*10*DPR)*dt;
+        if(f.y>H+10){seed(f,false)}if(f.x<-10)f.x=W+10;if(f.x>W+10)f.x=-10}
+      cx.beginPath();cx.arc(f.x,f.y,f.r,0,6.283);cx.fillStyle='rgba(240,247,255,'+f.a+')';cx.fill();
+    }
+  }
+  var tx=0,ty=0,px=0,py=0,running=true,last=performance.now();
+  hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();tx=((e.clientX-r.left)/r.width-.5)*2;ty=((e.clientY-r.top)/r.height-.5)*2});
+  hero.addEventListener('pointerleave',function(){tx=0;ty=0});
+  function frame(now){
+    if(!running)return;requestAnimationFrame(frame);
+    var dt=Math.min(.05,(now-last)/1000);last=now;
+    px+=(tx-px)*.06;py+=(ty-py)*.06;
+    if(!reduce&&word)word.style.transform='translate3d('+(-px*14).toFixed(1)+'px,'+(-py*6).toFixed(1)+'px,0)';
+    drawSnow(dt);
+  }
+  function setRun(v){if(v&&!running){running=true;last=performance.now();requestAnimationFrame(frame)}else if(!v){running=false}}
+  var vis=true;
+  if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;setRun(vis&&!document.hidden)},{threshold:0}).observe(hero);
+  document.addEventListener('visibilitychange',function(){setRun(vis&&!document.hidden)});
+  if('ResizeObserver' in window)new ResizeObserver(size).observe(hero);else addEventListener('resize',size);
+  size();if(!reduce)requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
